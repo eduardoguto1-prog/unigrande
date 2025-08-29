@@ -31,36 +31,36 @@ class Curso(models.Model):
     cod_curso: int = fields.IntField() # recebe o codigo do curso
     nom_curso: str = fields.CharField(max_length=40) # recebe o nome do curso, com um maximo de 40 caracteres
     tot_cred: int = fields.IntField(validators=[MaxValueValidator(99)]) # recebe o total de credito
-    idt_prof: int = fields.IntFiled(validators=[MaxValueValidator(999999)]) # recebe a identificação do professor
+    idt_prof: int = fields.IntField(validators=[MaxValueValidator(999999)]) # recebe a identificação do professor
 
     class Meta:
         table = "curso" 
-        unique_togather = (("cod_curso", "nom_curso", "tot_cred", "idt_prof"),)
+        unique_together = (("cod_curso", "nom_curso", "tot_cred", "idt_prof"),)
         indexes = (("cod_curso", "nom_curso", "tot_cred", "idt_prof"),)
 
 class Disciplina(models.Model):
     id: int = fields.IntField(pk=True)
     cod_disc: int = fields.IntField(validators=[MaxValueValidator(999999)]) # recebe o codigo da disciplina com o maximo de 6 digitos de 1 a 9
     nom_disc: str = fields.CharField(max_length=50) # recebe o nome da disciplina com um maximo de 50 caracteres
-    creditos: int = fields.IntFiled(validators=[MaxValueValidator(99)]) # recebe creditos de 2 digitos
-    top_disc: str = fields.CharFiled(max_length=9) # recebe o tipo de disciplina
-    horas_obrig: int = fields.IntFiled(validators=[MaxValueValidator(99)]) # recebe as horas obrigatorias com 2 digitos
-    limite_faltas: int = fields.IntField(validators[MaxValueValidator(99)]) # recebe o limite de faltas maximo de 2 digitos
+    creditos: int = fields.IntField(validators=[MaxValueValidator(99)]) # recebe creditos de 2 digitos
+    top_disc: str = fields.CharField(max_length=9) # recebe o tipo de disciplina
+    horas_obrig: int = fields.IntField(validators=[MaxValueValidator(99)]) # recebe as horas obrigatorias com 2 digitos
+    limite_faltas: int = fields.IntField(validators=[MaxValueValidator(99)]) # recebe o limite de faltas maximo de 2 digitos
 
     class Meta:
         table = "disciplina" 
-        unique_togather = (("cod_disc", "nom_disc", "creditos", "top_disc", "horas_obrig", "limite_faltas"),)
+        unique_together = (("cod_disc", "nom_disc", "creditos", "top_disc", "horas_obrig", "limite_faltas"),)
         indexes = (("cod_disc", "nom_disc", "creditos", "top_disc", "horas_obrig", "limite_faltas"),)
 
 class Matriz(models.Model):
-    id: int = fields.IntFiled(pk=True)
+    id: int = fields.IntField(pk=True)
     cod_disc: int = fields.IntField(validators=[MaxValueValidator(999999)]) # recebe o codigo da disciplina com o maximo de 6 digitos podendo ser de 1 a 9
     cod_curso: int = fields.IntField() # recebe o código do curso
     periodo: int = fields.IntField(validators=[MaxValueValidator(99)]) # recebe o periodo
 
     class Meta:
         table = "matriz"
-        unique_togather = (("cod_disc", "cod_curso", "periodo"),)
+        unique_together = (("cod_disc", "cod_curso", "periodo"),)
         indexes = (("cod_disc", "cod_curso", "periodo"),)
 
 class Turma(models.Model):
@@ -73,7 +73,7 @@ class Turma(models.Model):
 
     class Meta:
         table = "turma"
-        unique_togather = (("ano", "semestre", "cod_disc", "vagas", "idt_prof"),)
+        unique_together = (("ano", "semestre", "cod_disc", "vagas", "idt_prof"),)
         indexes = (("ano", "semestre", "cod_disc", "vagas", "idt_prof"),)
 
 class Aluno(models.Model):
