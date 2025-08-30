@@ -77,10 +77,46 @@ class Turma(models.Model):
         indexes = (("ano", "semestre", "cod_disc", "vagas", "idt_prof"),)
 
 class Aluno(models.Model):
-    pass
+    mat_alu: int = fields.IntField()
+    nom_alu: str = fields.CharField(validators=[max_length=50]) # recebe nome do aluno com maximo de 50 caracter
+    tot_cred_alu: int = fields.Intfield(validators=[MaxValueValidator(999)]) # recebe o total de crédito do aluno
+    data_nasc = fields.DateField() # recebe a data de nasccimento
+    mgp: float = fields.DecimalField(max_digits=4, decimal_places=2) # recebe a Média Geral Ponderada tendo 4 digitos sendo 2 decimais
+    cod_curso: int = fields.IntField()
+
+    class Meta:
+        table = "aluno"
+        unique_together(("mat_alu", "nom_alu", "tot_cred_alu", "data_nasc", "mgp", "cod_curso"),)
+        indexes = (("mat_alu", "nom_alu", "tot_cred_alu", "data_nasc", "mgp", "cod_curso"),)
 
 class Matricula(models.Model):
-    pass
+    ano: int = fields.IntField(validators=[MaxValueValidator(9999)]) # recebe ano
+    semestre: int = fields.IntField(validators=[MaxValueValidator(99)]) #recebe semestre
+    mat_alu: int = fields.IntField() # recebe matricula do aluno
+    cod_disc: int = fields.IntField(validators=[MaxValueValidator=(999999)]) # recebe o código da disciplina
+    nota_01: float = fields.DecimalField(max_digits=3, decimal_places=1) # recebe a primeira nota com 3 digitos sendo um decimal
+    nota_02: float = fields.DecimalField(max_digits=3, decimal_places=1) # recebe a segunda nota com 3 digitos sendo um decimal
+    nota_03: float = fields.DecimalField(max_digits=3, decimal_places=1) # recebe a terceira nota com 3 digitos sendo um decimal
+    faltas_01: int = fields.IntField(validators=[MaxValueValidator(999)]) # recebe a primeira falta 
+    faltas_02: int = fields.Intfield(validators=[MaxValueValidator(999)]) # recebe a segunda falta
+    faltas_03: int = fields.IntField(validators=[MaxValueValidator(999)]) # recebe a terceira falta
+
+    class Meta:
+        table = "matricula"
+        unique_together(("ano", "semestre", "mat_alu", "cod_disc", "nota_01", "nota_02", "nota_03", "faltas_01", "faltas_02", "faltas_03"),)
+        indexes (("ano", "semestre", "mat_alu", "cod_disc", "nota_01", "nota_02", "nota_03", "faltas_01", "faltas_02", "faltas_03"),)
+
 
 class Historico(models.Model):
-    pass
+    ano: int = fields.IntField(Validators=[MaxValueValidator(9999)])
+    semestre: int = fields.IntField(validators=[MaxValueValidator(99)])
+    mat_alu: int = fields.IntField()
+    cod_disc: int = fields.IntField(validators=[MaxValueValidator(999999)])
+    situacao: str = fields.CharField(max_length=2)
+    media: float = fields.DecimalFiled(max_digits=3, decimal_places=1)
+    faltas: int = fields.IntField(validators=[MaxValueValidator(999)])
+
+    class Meta:
+        table ="historico"
+        unique_together(("ano", "semestre", "mat_alu", "cod_disc", "situacao", "media", "faltas"),)
+        indexes(("ano", "semestre", "mat_alu", "cod_disc", "situacao", "media", "faltas"),)
